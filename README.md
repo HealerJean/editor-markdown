@@ -1,3 +1,20 @@
+---
+title: SpringBoot编辑Markdown
+date: 2018-07-19 03:33:00
+tags: 
+- SpringBoot
+category: 
+- SpringBoot
+description: SpringBoot编辑Markdown
+---
+<!-- image url 
+https://raw.githubusercontent.com/HealerJean123/HealerJean123.github.io/master/blogImages
+　　首行缩进
+<font color="red">  </font>
+-->
+
+## 前言
+
 > Markdown是一种可以使用普通文本编辑器编写的标记语言，通过简单的标记语法，它可以使普通文本内容具有一定的格式。
 
 ## 前言
@@ -56,54 +73,6 @@ var testEditor;
 
 - 访问地址：[http://localhost:8080/](http://localhost:8080/)
 
-### 图片上传
-
-由于在初始化编辑器中配置的图片上传地址为`imageUploadURL: "/file",`，与之对应，我们在`/file`处理文件上传即可
-
-```java
-@RestController
-@RequestMapping("/file")
-@Slf4j
-public class FileController {
-
-//    @Value("")
-//    String folder = System.getProperty("user.dir")+File.separator+"upload"+File.separator;
-    /**
-     * 在配置文件中配置的文件保存路径
-     */
-    @Value("${img.location}")
-    private String folder;
-
-    @PostMapping
-    public FileInfo upload(HttpServletRequest request, @RequestParam(value = "editormd-image-file", required = false) MultipartFile file) throws Exception {
-        log.info("【FileController】 fileName={},fileOrginNmae={},fileSize={}", file.getName(), file.getOriginalFilename(), file.getSize());
-        log.info(request.getContextPath());
-        String fileName = file.getOriginalFilename();
-        String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
-        String newFileName = new Date().getTime() + "." + suffix;
-
-        File localFile = new File(folder, newFileName);
-        file.transferTo(localFile);
-        log.info(localFile.getAbsolutePath());
-        return new FileInfo(1, "上传成功", request.getRequestURL().substring(0,request.getRequestURL().lastIndexOf("/"))+"/upload/"+newFileName);
-    }
-
-    @GetMapping("/{id}")
-    public void downLoad(@PathVariable String id, HttpServletRequest request, HttpServletResponse response) {
-        try (InputStream inputStream = new FileInputStream(new File(folder, id + ".txt"));
-             OutputStream outputStream = response.getOutputStream();) {
-            response.setContentType("application/x-download");
-            response.setHeader("Content-Disposition", "attachment;filename=test.txt");
-
-            IOUtils.copy(inputStream, outputStream);
-            outputStream.flush();
-        } catch (Exception e) {
-
-        }
-    }
-}
-
-```
 
 ### 文件预览
 
@@ -133,4 +102,42 @@ public class FileController {
 ```
 
 
-## [代码下载]()
+## [代码下载](https://github.com/HealerJean123/editor-markdown.git)
+
+
+
+
+
+
+
+
+
+<br/><br/><br/>
+如果满意，请打赏博主任意金额，感兴趣的在微信转账的时候，添加博主微信哦， 请下方留言吧。可与博主自由讨论哦
+
+|支付包 | 微信|微信公众号|
+|:-------:|:-------:|:------:|
+|![支付宝](https://raw.githubusercontent.com/HealerJean123/HealerJean123.github.io/master/assets/img/tctip/alpay.jpg) | ![微信](https://raw.githubusercontent.com/HealerJean123/HealerJean123.github.io/master/assets/img/tctip/weixin.jpg)|![微信公众号](https://raw.githubusercontent.com/HealerJean123/HealerJean123.github.io/master/assets/img/my/qrcode_for_gh_a23c07a2da9e_258.jpg)|
+
+
+
+
+<!-- Gitalk 评论 start  -->
+
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk@latest/dist/gitalk.min.js"></script> 
+<div id="gitalk-container"></div>    
+ <script type="text/javascript">
+    var gitalk = new Gitalk({
+		clientID: `1d164cd85549874d0e3a`,
+		clientSecret: `527c3d223d1e6608953e835b547061037d140355`,
+		repo: `HealerJean123.github.io`,
+		owner: 'HealerJean123',
+		admin: ['HealerJean123'],
+		id: '7dhf6mT8VlXWBwpv',
+    });
+    gitalk.render('gitalk-container');
+</script> 
+
+<!-- Gitalk end -->
+
